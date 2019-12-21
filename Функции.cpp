@@ -1,4 +1,4 @@
-#include "Base.h"
+﻿#include "Base.h"
 
 string name()
 {
@@ -81,7 +81,7 @@ int Battle(Mon mon, int SwAt, int PHP, int Ag, int MonAt, int MonHP)
 			return PHP;
 		}
 
-		cout << "\nAttack(1) �r dodge(2)?\n";
+		cout << "\nAttack(1) dodge(2)?\n";
 		
 		cin >> dey;
 		lin();
@@ -100,6 +100,8 @@ int Battle(Mon mon, int SwAt, int PHP, int Ag, int MonAt, int MonHP)
 			MonHP -= dmg;
 
 			Mdmg = Rand(MonAt - 10, MonAt + 10);
+			if (Mdmg < 0)
+				Mdmg = 1;
 			cout << "\nMonster hits on " << Mdmg << " DMG!\n";
 			Lin();
 			PHP -= Mdmg;
@@ -108,24 +110,28 @@ int Battle(Mon mon, int SwAt, int PHP, int Ag, int MonAt, int MonHP)
 		else if (dey == 2)
 		{
 			dodge = Rand(1, 100);
-			if (dodge > MonAt - Ag)
+			if (dodge > MonAt - Ag)			
 			{
-				cout << "\nBeautiful dodge!\nHP + " << dodge - MonAt + Ag << "\n";
-				PHP += dodge - MonAt + Ag;
+				int K = dodge - MonAt + Ag;
+				TablStatus("Beautiful dodge", "HP + ", -1000, K);;
+				PHP += K;
 			}
 			else if (dodge == MonAt - Ag)
 				cout << "\nGood dodge!\n";
 			else
 			{
-				cout << "\nfailed dodge\nHP - " << MonAt - Ag - dodge << "\n";
-				PHP -= MonAt - Ag - dodge;
+				int K = MonAt - Ag - dodge;
+				TablStatus("Failed dodge", "HP - ", -1000 , K);
+				PHP -= K;
 			}
 			Lin();
 		}
 		if (PHP > 100)
 			PHP = 100;
-		cout << "\nYou:\tHP " << PHP << "\n\tAttack " << SwAt << "\n\nMonster:\tHP " << MonHP << "\n\t\tAttack " << MonAt << endl;
-		Lin();
+		cout << "\nYou:";
+		TablStatus("HP = ", "Attack = ", PHP, SwAt);
+		cout << "\nMonster:";
+		TablStatus("HP = ", "Attack = ", MonHP, MonAt);
 	}
 }
 
@@ -137,6 +143,64 @@ void lin()
 
 void Lin()
 {
-	for (int i = 0; i < 80; i++)
-		cout << "=";
+	const int W = 100;
+	const char HorizontalLine = (char)205; //"═"
+	for (int k = 0; k < W; k++)	cout << HorizontalLine; //for
+}
+
+void TablStatus(string a, string b, int c, int d)
+{
+	const char VerticalLine = (char)186; //"║"
+	const char HorizontalLine = (char)205; //"═"
+	const char TopLeftCorner = (char)201; //"╔"
+	const char TopRightCorner = (char)187; //"╗"
+	const char BottomLeftCorner = (char)200; //"╚"
+	const char BottomRightCorner = (char)188; //"╝"
+	const char BottomJunction = (char)203; //"╦"
+	const char TopJunction = (char)202; //"╩"
+	const int W = 30;
+
+	// ╔══╦══╗
+	cout << "\n" << TopLeftCorner;
+	for (int i = 0; i < W; i++)	cout << HorizontalLine; //for
+	cout << BottomJunction;
+
+	for (int i = 0; i < W; i++) cout << HorizontalLine; //for
+	
+	cout << TopRightCorner << endl;
+
+	// ║ a ║ b ║
+	if (c == -1000 && d == -1000)
+	{
+		cout << VerticalLine << setw(W) << left << a
+			<< VerticalLine << setw(W) << left << b
+			<< VerticalLine << endl;
+	}
+	else if (c == -1000 && d != -1000)
+	{
+		cout << VerticalLine << setw(W) << left << a
+			<< VerticalLine << setw(W/2) << left << b << setw(W / 2) << d
+			<< VerticalLine << endl;
+	}
+	else if (c != -1000 && d == -1000)
+	{
+		cout << VerticalLine << setw(W/2) << left << a << setw(W / 2) << c
+			<< VerticalLine << setw(W) << left << b 
+			<< VerticalLine << endl;
+	}
+	else 
+	{
+		cout << VerticalLine << setw(W/2) << left << a << setw(W / 2) << c
+			<< VerticalLine << setw(W/2) << left << b << setw(W / 2) << d
+			<< VerticalLine << endl;
+	}
+
+	// ╚══╩══╝
+	cout << BottomLeftCorner;
+
+	for (int k = 0; k < W; k++)	cout << HorizontalLine; //for
+	cout << TopJunction;
+
+	for (int k = 0; k < W; k++)	cout << HorizontalLine; //for
+	cout << BottomRightCorner << endl;
 }

@@ -2,8 +2,18 @@
 #include <string>
 #include <dos.h>
 #include <random>
+#include <iomanip>
 
 using namespace std;
+
+enum class MonT
+{
+	ORC,
+	SKELETON,
+	GOBLIN,
+	OGR,
+	SLIME
+};
 
 struct Player
 {
@@ -18,15 +28,6 @@ struct Mon
 	MonT type;
 	int healt;
 	int prob;
-};
-
-enum class MonT
-{
-	ORC,
-	SKELETON,
-	GOBLIN,
-	OGR,
-	SLIME
 };
 
 void pMon(Mon mon, int HP, int Attack);
@@ -48,3 +49,5 @@ void lin();
 void Lin();
 
 int XP(int a);
+
+void TablStatus(string a, string b, int c, int d);

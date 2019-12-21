@@ -2,8 +2,8 @@
 
 int main()
 {
-	setlocale(LC_ALL, "RU"); // вчключение руссого языка
-	system("color F0"); // смена цвета консоли
+	/*setlocale(LC_ALL, "RU"); // вчключение руссого языка
+	system("color F0"); // смена цвета консоли*/
 
 	Mon monster;
 	Mon Goblin = { MonT::GOBLIN, 40, 30 };
@@ -12,13 +12,14 @@ int main()
 	Mon Ogr = { MonT::OGR, 110, 93 };
 	Mon Slime = { MonT::SLIME, 20, 10 };
 
-	Player P = { 50, 13, 10, 1 };
+	Player P = { 100, 13, 10, 1 };
 
 	int MonAt;
 	int MonHP;
 
 	int r;
 	int xp(0);
+	int i;
 
 	int dey;
 	cout << "Your stats:\nHP: " << P.HP << "\tAttack: " << P.Attack << "\t Agility: " << P.Agility<< "\tlvl: " << P.lvl << endl;
@@ -49,7 +50,7 @@ int main()
 		MonHP = HP(monster);
 		pMon(monster, MonHP, MonAt);
 		lin();
-		cout << "\nBattle(1) or Run(2)?\n";
+		cout << "\nBattle(1)  Run(2)\n";
 		cin >> dey;
 		//cin.ignore();
 
@@ -77,18 +78,21 @@ int main()
 				if (Xp <= 0)
 					Xp = 1;
 				xp += Xp;
-				cout << "\nxp + " << Xp << endl;
 				if (xp >= 100)
 				{
-					Lin();
 					P.lvl += xp / 100;
-					cout << "\nLVL UP!\n";
-					cout << "\nAttack + " << (xp / 100) * 5 << endl;
-					P.Attack += 5;
+					for (i = 0; i < xp / 100; i++)
+					{
+						TablStatus("LVL UP!", "Attack + 5!", -1000, -1000);
+						P.Attack += 5;
+					}
 					xp /= 100;
 					cout << "Your lvl: " << P.lvl << endl;
+					Lin();
 				}
-				Lin();
+				else				
+					TablStatus("lvl: ", "xp +", P.lvl, Xp);
+				
 			}
 		}
 	}
